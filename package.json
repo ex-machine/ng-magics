@@ -1,0 +1,94 @@
+{
+  "name": "ng-magics",
+  "author": "ex-machine",
+  "version": "",
+  "description": "AngularJS companion module for ScrollMagic",
+  "keywords": [
+    "angular",
+    "scrollmagic",
+    "progress",
+    "position",
+    "scroll",
+    "scrolling",
+    "animation",
+    "parallax"
+  ],
+  "license": "MIT",
+  "main": "dist/es5/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ex-machine/ng-magics.git"
+  },
+  "engines": {
+    "node": ">= 4.0.0",
+    "iojs": ">= 3.0.0"
+  },
+  "devDependencies": {
+    "angular": "^1.0.0",
+    "angular-mocks": "^1.0.0",
+    "babel-core": "^5.8.34",
+    "babel-eslint": "^4.1.8",
+    "babel-loader": "^5.4.0",
+    "babel-runtime": "^5.8.34",
+    "babelify": "^6.4.0",
+    "del": "^1.2.0",
+    "dgeni": "^0.4.2",
+    "dgeni-markdown": "bisubus/dgeni-markdown",
+    "dgeni-packages": "^0.11.1",
+    "es5-shim": "^4.4.1",
+    "es6-deferred": "^1.3.0",
+    "es6-shim": "^0.34.1",
+    "extend": "^3.0.0",
+    "gsap": "^1.0.0",
+    "gulp": "^3.9.0",
+    "gulp-concat": "^2.6.0",
+    "gulp-debug": "^2.1.2",
+    "gulp-eslint": "^1.1.1",
+    "gulp-if": "^1.2.5",
+    "gulp-load-plugins": "^1.0.0",
+    "gulp-nunjucks": "^2.1.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-sourcemaps": "^1.6.0",
+    "gulp-tap": "^0.1.3",
+    "gulp-task-listing": "^1.0.1",
+    "gulp-tslint": "^4.3.1",
+    "gulp-typescript": "^2.10.0",
+    "gulp-uglify": "^1.2.0",
+    "imports-loader": "^0.6.5",
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.13.11",
+    "karma-chrome-launcher": "^0.2.1",
+    "karma-jasmine": "^0.3.6",
+    "karma-jasmine-matchers": "^2.0.0-beta2",
+    "karma-phantomjs-launcher": "^0.2.3",
+    "karma-phantomjs-shim": "^1.2.0",
+    "karma-sourcemap-loader": "^0.3.7",
+    "karma-spec-reporter": "0.0.20",
+    "karma-webpack": "^1.7.0",
+    "mversion": "^1.10.0",
+    "nunjucks": "^2.3.0",
+    "phantomjs": "^1.9.19",
+    "pify": "^2.3.0",
+    "run-sequence": "^1.1.1",
+    "scrollmagic": "^2.0.0",
+    "small": "^0.1.1",
+    "tslint": "^3.3.0",
+    "webpack": "^1.12.13"
+  },
+  "dependencies": {
+    "debottle": "^1.0.1"
+  },
+  "peerDependencies": {
+    "angular": "^1.0.0",
+    "gsap": "^1.0.0",
+    "scrollmagic": "^2.0.0"
+  },
+  "//": [
+    "npm run version -- 1.0.0"
+  ],
+  "scripts": {
+    "version": "mversion -n -m %s",
+    "test": "karma start ./test/karma.conf.js"
+  }
+}

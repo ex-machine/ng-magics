@@ -1,0 +1,34 @@
+{
+  "name": "ng-magics",
+  "authors": [
+    "ex-machine"
+  ],
+  "version": "",
+  "description": "AngularJS companion module for ScrollMagic",
+  "keywords": [
+    "angular",
+    "scrollmagic",
+    "progress",
+    "position",
+    "scroll",
+    "scrolling",
+    "animation",
+    "parallax"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/ex-machine/ng-magics",
+  "moduleType": [
+    "es6",
+    "node"
+  ],
+  "main": "dist/ng-magics.js",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {
+    "angular": "^1.0"
+  },
+  "devDependencies": {}
+}

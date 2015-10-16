@@ -1,0 +1,47 @@
+{
+	"parser": "babel-eslint",
+	"extends": [
+		"eslint:recommended"
+	],
+	"rules": {
+        "comma-dangle": [1, "never"],
+        "no-console": 0,
+		"no-empty": 1,
+        "no-unused-vars": [1, {"vars": "all", "args": "none"}],
+		"strict": [0, "global"],
+	},
+	"ecmaFeatures": {
+		"modules": true,
+	},
+	"env": {
+		"es6": true,
+		"jasmine": true,
+		"node": true,
+		"browser": true
+	},
+	"globals": {
+		"arguments": true,
+		"require": false,
+		"angular": false,
+		"ScrollMagic": false,
+		"TweenMax": false,
+		"TweenLite": false,
+
+		"_$": false,
+		"_get": false,
+		"_inject": false,
+		"_module": false,
+
+		"_extend": false,
+
+		"_any": false,
+		"_createSpy": false,
+		"_objectContaining": false,
+
+		"_log": false,
+		"_debug": false,
+		"_info": false,
+		"_warn": false,
+		"_error": false
+	}
+}
