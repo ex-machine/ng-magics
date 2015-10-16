@@ -1,7 +1,7 @@
 {
   "name": "ng-magics",
   "author": "ex-machine",
-  "version": "",
+  "version": "1.0.0",
   "description": "AngularJS companion module for ScrollMagic",
   "keywords": [
     "angular",
