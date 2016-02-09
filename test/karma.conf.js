@@ -12,8 +12,6 @@ module.exports = (karmaConfig) => {
 		],
 		files: [
             'unit/_prereqs.js',
-            // 'unit/index.oldSpec.js',
-			// 'unit/prerequisite.spec.js'
 			'unit/**/*.spec.js'
 		],
 		preprocessors: {
@@ -52,8 +50,8 @@ module.exports = (karmaConfig) => {
 		// logLevel: karmaConfig.LOG_WARN,
 		// logLevel: karmaConfig.LOG_DEBUG,
 		logLevel: karmaConfig.LOG_INFO,
-		// autoWatch: false,
-		// singleRun: true,
+		autoWatch: false,
+		singleRun: true,
 		// browsers: ['Chrome'],
 		browsers: ['PhantomJS'],
 		customLaunchers: {
