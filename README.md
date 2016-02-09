@@ -2,6 +2,7 @@
 
 *ng-magics* (full name: *ng-magics-crawl*) is Angular 1.x companion for ScrollMagic, a de facto JavaScript tool for top grade scrolling animation.
 
+[![Build Status](https://travis-ci.org/ex-machine/ng-magics.svg?branch=master)](https://travis-ci.org/ex-machine/ng-magics)
 
 # Description
 
