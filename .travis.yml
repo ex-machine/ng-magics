@@ -1,0 +1,11 @@
+language: node_js
+node_js:
+  - "stable"
+
+before_install:
+  - npm up -g npm
+  - npm --version
+  - npm i -g gulp karma
+
+git:
+  depth: 10
