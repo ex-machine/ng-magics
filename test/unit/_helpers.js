@@ -1,4 +1,4 @@
-var global = (true && eval)('this');
+var global = eval.call(null, 'this');
 var jasmineEnv = jasmine.getEnv();
 
 function spec(suite) {
