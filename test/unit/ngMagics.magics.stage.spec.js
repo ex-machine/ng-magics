@@ -53,7 +53,6 @@ describe('ngMagics.magics.stage', function () {
 
 			expect(_$.scrollMagic.Controller).toHaveBeenCalledWith({
 				vertical: false,
-				globalSceneOptions: {},
 				container: _$.$window
 			});
 		});
@@ -106,7 +105,6 @@ describe('ngMagics.magics.stage', function () {
 			expect(customStage).toBe(_$.magics._stages.custom);
 
 			expect(_$.scrollMagic.Controller).toHaveBeenCalledWith({
-				globalSceneOptions: {},
 				container: customContainer
 			});
 		});
