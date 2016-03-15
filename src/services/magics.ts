@@ -57,7 +57,6 @@ class MagicsInstance {
 	static $inject = ['$cacheFactory', '$q', '$rootScope', '$window', 'debounce', 'throttle', 'scrollMagic', 'Tween'];
 
 	_provider;
-	_brake;
 	_delay;
 	_scenes;
 	_stages;
@@ -77,10 +76,6 @@ class MagicsInstance {
 
 		let { $cacheFactory, debounce, throttle } = this.$;
 
-		this._brake = (this._provider.performanceOptions.brake === 'throttle')
-			? throttle
-			: debounce;
-
 		this._delay = this._provider.performanceOptions.delay;
 
 		let cache = $cacheFactory('magics');
@@ -89,6 +84,24 @@ class MagicsInstance {
 		this._stages = cache.put('stages', {});
 
 		this.stage('default', {});
+	}
+
+	// TODO: test _brake
+	_brake(handler, delay) {
+		let brake;
+		let brakeOption = this._provider.performanceOptions.brake;
+
+		if (brakeOption === 'throttle') {
+			brake = this.$.throttle;
+		} else if (brakeOption === 'debounce') {
+			brake = this.$.debounce;
+		} else if (typeof brakeOption === 'function') {
+			brake = brakeOption;
+		} else {
+			brake = (handler) => handler;
+		}
+
+		return brake(handler, delay);
 	}
 
 	_isEmpty(val) {
