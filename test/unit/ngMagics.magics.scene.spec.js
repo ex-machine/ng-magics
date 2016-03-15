@@ -32,7 +32,7 @@ describe('ngMagics.magics.scene', function () {
 			expect(scene instanceof _$.scrollMagic.Scene).toBe(true);
 			expect(scene).toBe(_$.magics._scenes.some);
 
-			expect(_$.scrollMagic.Scene).toHaveBeenCalledWith(undefined);
+			expect(_$.scrollMagic.Scene).toHaveBeenCalledWith({});
 			expect(addTo).toHaveBeenCalledWith(defaultStage);
 		});
 	});
