@@ -59,12 +59,16 @@ class MagicsSpyDirectiveController {
 		}
 
 		// TODO: ? $rootScope
-		$scope.$on('sceneEnter:' + sceneName, (e) => {
-			$scope.$apply(() => this.flag(true));
-		});
+		$scope.$on('scene:' + sceneName, ($e, e) => {
+			let state;
 
-		$scope.$on('sceneLeave:' + sceneName, (e) => {
-			$scope.$apply(() => this.flag(false));
+			if (e.type === 'enter') {
+				state = true;
+			} else if (e.type === 'leave') {
+				state = false;
+			}	
+
+			$scope.$apply(() => this.flag(state));
 		});
 	}
 }

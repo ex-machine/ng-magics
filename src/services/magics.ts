@@ -235,6 +235,11 @@ class MagicsInstance {
 			}));
 		}
 
+		this.onScene(name, (e) => {
+			$rootScope.$broadcast('scene:' + name, e);
+			$rootScope.$broadcast('scene', name, e);
+		});
+
 		this.onSceneEnter(name, (e) => {
 			$rootScope.$broadcast('sceneEnter:' + name, e);
 			$rootScope.$broadcast('sceneEnter', name, e);
@@ -276,6 +281,21 @@ class MagicsInstance {
 
 	// TODO: ? stage namespacing, brake per stage
 	// TODO: additional params
+
+	onScene(name, handler) {
+		let brakedHandler = this._brake(handler, this._delay);
+
+		this._scenes[name].on('enter.ngMagics leave.ngMagics', brakedHandler);
+
+		return () => {
+			let scene = this._scenes[name];
+
+			if (scene) {
+				scene.off('enter.ngMagics leave.ngMagics', brakedHandler);
+			}
+		};
+	}
+
 
 	onSceneEnter(name, handler) {
 		let brakedHandler = this._brake(handler, this._delay);
