@@ -172,15 +172,21 @@ class MagicsInstance {
 			{},
 			this._provider.stageOptions,
 			{
-				globalSceneOptions: this._provider.sceneOptions,
 				// TODO: custom container	
 				container: this._provider.container || $window
 			},
 			options
 		);
 
+		// TODO?: refactor to ScrollMagic API
+		if ('sceneOptions' in stageOptions) {
+			var sceneOptions = stageOptions.sceneOptions;
+			delete stageOptions.sceneOptions;
+		}
+
 		let stage = this._stages[name] = new scrollMagic.Controller(stageOptions);
 
+		stage._sceneOptions = sceneOptions;
 		stage.scrollTo(this._scrollHandler);
 
 		return this._patch(name, 'stage', stage);
@@ -200,7 +206,15 @@ class MagicsInstance {
 
 		let stage = this._stages[stageName];
 
-		let scene = this._scenes[name] = (new scrollMagic.Scene(options)).addTo(stage);
+		// TODO: test sceneOptions
+		let sceneOptions = angular.extend(
+			{},
+			this._provider.sceneOptions,
+			stage._sceneOptions,
+			options
+		);
+
+		let scene = this._scenes[name] = (new scrollMagic.Scene(sceneOptions)).addTo(stage);
 
 		if (this._provider.debug) {
 			scene.addIndicators(angular.extend({}, this._provider.debugOptions, {
