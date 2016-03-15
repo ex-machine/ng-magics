@@ -48,10 +48,13 @@ class MagicsSceneDirectiveController {
 
 		this.scene = magics.scene(this.sceneName, this.sceneOptions, stageName);
 
+		let element = $element[0];
+		// TODO: spec
+		this.scene.triggerElement(element);
+
 		if (!('duration' in this.sceneOptions)) {
 			// TODO: ? stage property
 			let stage = magics.stage(stageName);
-			let element = $element[0];
 			let isVertical = stage.info('vertical');
 
 			// TODO: ? separate method
@@ -59,10 +62,6 @@ class MagicsSceneDirectiveController {
 				// TODO: caching
 				return isVertical ? element.offsetHeight : element.offsetWidth;
 			});
-
-			// TODO: spec
-			this.scene.triggerElement(element);
-
 		}
 
 		$element.on('$destroy', () => {
