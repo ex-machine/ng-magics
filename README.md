@@ -22,7 +22,7 @@ $scope.progressHandler = throttle((e) => {
 ```
 Instead of jQuery-fashioned, harder to maintain code:
 
-```
+```javascript
 var scene = new ScrollMagic.Scene({
 	triggerElement: '#element',
 	// manually calculated number
