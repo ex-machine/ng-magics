@@ -43,11 +43,15 @@ var MagicsSpyDirectiveController = (function () {
             $element.on('$destroy', function () { return offSceneProgress(); });
         }
         // TODO: ? $rootScope
-        $scope.$on('sceneEnter:' + sceneName, function (e) {
-            $scope.$apply(function () { return _this.flag(true); });
-        });
-        $scope.$on('sceneLeave:' + sceneName, function (e) {
-            $scope.$apply(function () { return _this.flag(false); });
+        $scope.$on('scene:' + sceneName, function ($e, e) {
+            var state;
+            if (e.type === 'enter') {
+                state = true;
+            }
+            else if (e.type === 'leave') {
+                state = false;
+            }
+            $scope.$apply(function () { return _this.flag(state); });
         });
     };
     MagicsSpyDirectiveController.$inject = ['$scope', '$element', '$attrs', '$parse', 'magics'];

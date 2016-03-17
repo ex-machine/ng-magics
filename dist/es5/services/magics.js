@@ -88,17 +88,43 @@ var MagicsInstance = (function () {
         this._provider = provider;
         //
         var _a = this.$, $cacheFactory = _a.$cacheFactory, debounce = _a.debounce, throttle = _a.throttle;
-        this._brake = (this._provider.performanceOptions.brake === 'throttle')
-            ? throttle
-            : debounce;
-        this._delay = this._provider.performanceOptions.delay;
         var cache = $cacheFactory('magics');
         this._scenes = cache.put('scenes', {});
         this._stages = cache.put('stages', {});
         this.stage('default', {});
     }
+    // TODO: test _brake
+    MagicsInstance.prototype._brake = function (handler, delay) {
+        var brake;
+        var brakeOption = this._provider.performanceOptions.brake;
+        if (brakeOption === 'throttle') {
+            brake = this.$.throttle;
+        }
+        else if (brakeOption === 'debounce') {
+            brake = this.$.debounce;
+        }
+        else if (typeof brakeOption === 'function') {
+            brake = brakeOption;
+        }
+        else {
+            brake = function (handler) { return handler; };
+        }
+        return brake(handler, delay);
+    };
     MagicsInstance.prototype._isEmpty = function (val) {
         return ([null, undefined, ''].indexOf(val) >= 0);
+    };
+    // TODO: test _onSceneBraked
+    MagicsInstance.prototype._onSceneBraked = function (eventName, name, handler) {
+        var _this = this;
+        var brakedHandler = this._brake(handler, this._provider.performanceOptions.delay);
+        this._scenes[name].on(eventName, brakedHandler);
+        return function () {
+            var scene = _this._scenes[name];
+            if (scene) {
+                scene.off(eventName, brakedHandler);
+            }
+        };
     };
     MagicsInstance.prototype._patch = function (name, type, instance) {
         var _this = this;
@@ -133,11 +159,16 @@ var MagicsInstance = (function () {
             return this._stages[name];
         }
         var stageOptions = angular.extend({}, this._provider.stageOptions, {
-            globalSceneOptions: this._provider.sceneOptions,
             // TODO: custom container	
             container: this._provider.container || $window
         }, options);
+        // TODO?: refactor to ScrollMagic API
+        if ('sceneOptions' in stageOptions) {
+            var sceneOptions = stageOptions.sceneOptions;
+            delete stageOptions.sceneOptions;
+        }
         var stage = this._stages[name] = new scrollMagic.Controller(stageOptions);
+        stage._sceneOptions = sceneOptions;
         stage.scrollTo(this._scrollHandler);
         return this._patch(name, 'stage', stage);
     };
@@ -151,12 +182,18 @@ var MagicsInstance = (function () {
             stageName = 'default';
         }
         var stage = this._stages[stageName];
-        var scene = this._scenes[name] = (new scrollMagic.Scene(options)).addTo(stage);
+        // TODO: test sceneOptions
+        var sceneOptions = angular.extend({}, this._provider.sceneOptions, stage._sceneOptions, options);
+        var scene = this._scenes[name] = (new scrollMagic.Scene(sceneOptions)).addTo(stage);
         if (this._provider.debug) {
             scene.addIndicators(angular.extend({}, this._provider.debugOptions, {
                 name: name
             }));
         }
+        this.onScene(name, function (e) {
+            $rootScope.$broadcast('scene:' + name, e);
+            $rootScope.$broadcast('scene', name, e);
+        });
         this.onSceneEnter(name, function (e) {
             $rootScope.$broadcast('sceneEnter:' + name, e);
             $rootScope.$broadcast('sceneEnter', name, e);
@@ -186,28 +223,14 @@ var MagicsInstance = (function () {
     };
     // TODO: ? stage namespacing, brake per stage
     // TODO: additional params
+    MagicsInstance.prototype.onScene = function (name, handler) {
+        return this._onSceneBraked('enter.ngMagics leave.ngMagics', name, handler);
+    };
     MagicsInstance.prototype.onSceneEnter = function (name, handler) {
-        var _this = this;
-        var brakedHandler = this._brake(handler, this._delay);
-        this._scenes[name].on('enter.ngMagics', brakedHandler);
-        return function () {
-            var scene = _this._scenes[name];
-            if (scene) {
-                scene.off('enter.ngMagics', brakedHandler);
-            }
-        };
+        return this._onSceneBraked('enter.ngMagics', name, handler);
     };
     MagicsInstance.prototype.onSceneLeave = function (name, handler) {
-        var _this = this;
-        var brakedHandler = this._brake(handler, this._delay);
-        var scene = this._scenes[name];
-        scene.on('leave.ngMagics', brakedHandler);
-        return function () {
-            var scene = _this._scenes[name];
-            if (scene) {
-                scene.off('leave.ngMagics', brakedHandler);
-            }
-        };
+        return this._onSceneBraked('leave.ngMagics', name, handler);
     };
     // TODO: onScenePoint
     MagicsInstance.prototype.onSceneProgress = function (name, handler) {

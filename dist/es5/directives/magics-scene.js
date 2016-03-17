@@ -33,18 +33,18 @@ var MagicsSceneDirectiveController = (function () {
             return;
         }
         this.scene = magics.scene(this.sceneName, this.sceneOptions, stageName);
+        var element = $element[0];
+        // TODO: spec
+        this.scene.triggerElement(element);
         if (!('duration' in this.sceneOptions)) {
             // TODO: ? stage property
             var stage = magics.stage(stageName);
-            var element = $element[0];
             var isVertical = stage.info('vertical');
             // TODO: ? separate method
             this.scene.duration(function () {
                 // TODO: caching
                 return isVertical ? element.offsetHeight : element.offsetWidth;
             });
-            // TODO: spec
-            this.scene.triggerElement(element);
         }
         $element.on('$destroy', function () {
             magics.scene(_this.sceneName).destroy();
