@@ -108,6 +108,21 @@ class MagicsInstance {
 		return ([null, undefined, ''].indexOf(val) >= 0);
 	}
 
+	// TODO: test _onSceneBraked
+	_onSceneBraked(eventName, name, handler) {
+		let brakedHandler = this._brake(handler, this._delay);
+
+		this._scenes[name].on(eventName, brakedHandler);
+
+		return () => {
+			let scene = this._scenes[name];
+
+			if (scene) {
+				scene.off(eventName, brakedHandler);
+			}
+		};
+	}
+
 	_patch(name, type, instance) {
 		if ('$$patched' in instance) {
 			return instance;
@@ -283,47 +298,15 @@ class MagicsInstance {
 	// TODO: additional params
 
 	onScene(name, handler) {
-		let brakedHandler = this._brake(handler, this._delay);
-
-		this._scenes[name].on('enter.ngMagics leave.ngMagics', brakedHandler);
-
-		return () => {
-			let scene = this._scenes[name];
-
-			if (scene) {
-				scene.off('enter.ngMagics leave.ngMagics', brakedHandler);
-			}
-		};
+		return this._onSceneBraked('enter.ngMagics leave.ngMagics', name, handler);
 	}
 
-
 	onSceneEnter(name, handler) {
-		let brakedHandler = this._brake(handler, this._delay);
-
-		this._scenes[name].on('enter.ngMagics', brakedHandler);
-
-		return () => {
-			let scene = this._scenes[name];
-
-			if (scene) {
-				scene.off('enter.ngMagics', brakedHandler);
-			}
-		};
+		return this._onSceneBraked('enter.ngMagics', name, handler);		
 	}
 
 	onSceneLeave(name, handler) {
-		let brakedHandler = this._brake(handler, this._delay);
-		let scene = this._scenes[name];
-
-		scene.on('leave.ngMagics', brakedHandler);
-
-		return () => {
-			let scene = this._scenes[name];
-
-			if (scene) {
-				scene.off('leave.ngMagics', brakedHandler);
-			}
-		};
+		return this._onSceneBraked('leave.ngMagics', name, handler);
 	}
 
 	// TODO: onScenePoint
