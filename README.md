@@ -67,7 +67,7 @@ Fixes the element in viewport during the current scene, until it is unpinned man
 
 ### Spy
 
-The concept of scene spies is specific to *ng-magics*. A spy directive, `magics-pin` binds scope properties to the events ('enter', 'leave' and 'progress') of the relevant scene.
+The concept of scene spies is specific to *ng-magics*. A spy directive, `magics-spy` binds scope properties to the events ('enter', 'leave' and 'progress') of the relevant scene.
 
 # Prerequisites
 
