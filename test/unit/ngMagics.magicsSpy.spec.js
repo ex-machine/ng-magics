@@ -126,7 +126,7 @@ describe('ngMagics.magicsSpy', function () {
 			it('sets internal flag on "enter"', () => {
 				expect(ctrl._flagSetter).toBe(undefined);
 
-				scope.$broadcast('sceneEnter:some');
+				scope.$broadcast('scene:some', { type: 'enter' });
 
 				expect(ctrl.flag).toHaveBeenCalledWith(true);
 				expect(ctrl._flag).toBe(true);
@@ -135,7 +135,7 @@ describe('ngMagics.magicsSpy', function () {
 			it('unsets internal flag on "leave"', () => {
 				expect(ctrl._flagSetter).toBe(undefined);
 
-				scope.$broadcast('sceneLeave:some');
+				scope.$broadcast('scene:some', { type: 'leave' });
 
 				expect(ctrl.flag).toHaveBeenCalledWith(false);
 				expect(ctrl._flag).toBe(false);
@@ -163,7 +163,7 @@ describe('ngMagics.magicsSpy', function () {
 			});
 
 			it('sets scope flag on "enter"', () => {
-				scope.$broadcast('sceneEnter:some');
+				scope.$broadcast('scene:some', { type: 'enter' });
 
 				expect(ctrl.flag).toHaveBeenCalledWith(true);
 				expect(ctrl._flagSetter).toHaveBeenCalledWith(true);
@@ -173,7 +173,7 @@ describe('ngMagics.magicsSpy', function () {
 			});
 
 			it('unsets scope flag on "leave"', () => {
-				scope.$broadcast('sceneLeave:some');
+				scope.$broadcast('scene:some', { type: 'leave' });
 
 				expect(ctrl.flag).toHaveBeenCalledWith(false);
 				expect(ctrl._flagSetter).toHaveBeenCalledWith(false);
@@ -205,7 +205,7 @@ describe('ngMagics.magicsSpy', function () {
 			it('sets internal and skips scope flag', () => {
 				expect(ctrl._flagSetter).toBe(undefined);
 
-				expect(() => scope.$broadcast('sceneEnter:some')).not.toThrow();
+				expect(() => scope.$broadcast('scene:some', { type: 'enter' })).not.toThrow();
 
 				expect(ctrl.flag).toHaveBeenCalledWith(true);
 				expect(ctrl._flag).toBe(true);
