@@ -17,39 +17,72 @@ describe('ngMagics.magics.constructor', function () {
 
 	describe('braking function', function () {
 		it('is "debounce"', () => {
-			_module((magicsProvider) => {
-				magicsProvider.performanceOptions.brake = 'debounce';
-			});
+			_module(
+				($provide, magicsProvider) => {
+					$provide.constant('debounce', jasmine.createSpy('debounce'));
+					magicsProvider.performanceOptions.brake = 'debounce';
+				}
+			);
 
 			_extend(_$, _get('magics', 'debounce'));
 
-			expect(_$.magics._brake).toBe(_$.debounce);
+			let handler = () => {};
+
+			_$.magics._brake(handler, 10);
+			expect(_$.debounce).toHaveBeenCalledWith(handler, 10);
 		});
 
 		it('is "throttle"', () => {
-			_module((magicsProvider) => {
-				magicsProvider.performanceOptions.brake = 'throttle';
-			});
+			_module(
+				($provide, magicsProvider) => {
+					$provide.constant('throttle', jasmine.createSpy('throttle'));
+					magicsProvider.performanceOptions.brake = 'throttle';
+				}
+			);
 
 			_extend(_$, _get('magics', 'throttle'));
 
-			expect(_$.magics._brake).toBe(_$.throttle);
+			let handler = () => {};
+			_$.magics._brake(handler, 10);
+
+			expect(_$.throttle).toHaveBeenCalledWith(handler, 10);
+		});
+
+		it('is custom function', () => {
+			var customBrake = jasmine.createSpy('customBrake');
+
+			_module((magicsProvider) => {
+				magicsProvider.performanceOptions.brake = customBrake;
+			});
+
+			_extend(_$, _get('magics'));
+
+			let handler = () => {};
+			_$.magics._brake(handler, 10);
+
+			expect(customBrake).toHaveBeenCalledWith(handler, 10);
 		});
 
 		it('is "debounce" by default', () => {
+			_module(
+				($provide, magicsProvider) => {
+					$provide.constant('debounce', jasmine.createSpy('debounce'));
+					_extend(_$, { magicsProvider });
+				}
+			);
+
 			_extend(_$, _get('magics', 'debounce'));
 
-			expect(_$.magics._brake).toBe(_$.debounce);
-		});
+			let handler = () => {};
+			_$.magics._brake(handler, 10);
 
+			expect(_$.magicsProvider.performanceOptions.brake).toBe('debounce');
+			expect(_$.debounce).toHaveBeenCalledWith(handler, 10);
+		});
 	});
 
 	describe('...', function () {
 		beforeEach(() => _extend(_$, _get('magics', 'scrollMagic')));
-
-		it('gets braking delay from configuration', () => {
-			expect(_$.magics._delay).toBe(_$.magics._provider.performanceOptions.delay);
-		});
 
 		it('injects dependencies', () => {
 			let deps = _get('$cacheFactory', '$q', '$rootScope', '$window', 'debounce', 'throttle', 'scrollMagic', 'Tween');
